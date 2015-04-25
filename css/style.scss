@@ -1,0 +1,221 @@
+$bg: #f3f5f9;
+$fg: #1e2123;
+$grey1: #456;
+$grey2: #678;
+$grey3: #9AB;
+$link: #00A3F1;
+$fs: 10px;
+$head_h: 100px;
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+#container {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: $bg;
+  padding: 30px;
+  overflow: hidden;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+#dots {
+  z-index: 1;
+  position: absolute; top: 0; left: 0;
+}
+
+#dots > .dot {
+  cursor: pointer;
+  position: absolute;
+  top: -100px; left: -100px;
+  width: 16px; height: 16px;
+  border-radius: 16px;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  background-color: rgba(0,0,0,0);
+  opacity: 1;
+  transform: translate(-8px, -8px);
+  transition: background-color .3s, box-shadow .3s;
+}
+
+#dots:hover > .dot {
+  background-color: rgba(0,0,0,.15);
+}
+
+#dots > .dot:hover {
+  background-color: rgba(0,0,0,.4);
+  box-shadow: 0 0 0 3px rgba(255,255,255,1);;
+}
+
+#svg {
+  position: absolute;
+  top: $head_h; right: 420px; left: 100px; bottom: 100px;
+  overflow: visible;
+  transition: right .5s;
+
+  &.larger {
+    right: 100px;
+  }
+
+  > svg {
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+}
+
+h1 {
+  font-size: $fs * 3;
+  color: $grey2;
+  font-weight: 100;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+#header {
+  padding: 20px 20px 30px 20px;
+}
+
+
+#canvas {
+  //position: absolute;
+  //bottom: 0px; left: 0px;
+  padding: 0px 10px 5px 20px
+}
+
+#menu {
+  position: absolute;
+  top: 0; right: -340px; width: 320px; bottom: 0;
+  background-color: #fff;
+  border-left: 1px solid darken($bg, 2);
+  padding: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: right .5s;
+
+
+
+
+  &.open {
+    right: 0;
+  }
+
+  #fileInput { max-width: 175px; }
+
+  p {
+    padding: 0px 10px 5px 20px;
+
+    label {
+      display: inline-block;
+      font-size: 12px;
+      min-width: 120px;
+      color: $grey2;
+      font-weight: 400;
+
+      &.checkbox {
+        cursor: pointer;
+        &:hover { color: $link;}
+        line-height: 30px;
+        > * { display: inline-block; vertical-align: middle;}
+
+        &:last-child { line-height: 1; }
+      }
+
+      &.sub { margin-bottom: 15px;}
+      &.fileinput { margin-top: 15px; margin-left: 120px;}
+      &.hint { color: #bbb;}
+
+      &.action {
+        color: $link;
+        cursor: pointer;
+        &:hover { color: #00CCFF;}
+      }
+    }
+
+    input[type="number"] {
+      padding: 5px;
+      width: 100px;
+      border: 1px solid $grey3;
+
+      &[type="file"] {
+        width: auto;
+      }
+    }
+
+    select {
+      padding: 5px;
+      width: 115px;
+      border: 1px solid $grey3;
+    }
+
+  }
+
+  hr {
+    margin: 20px;
+    border: none;
+    border-top: 1px solid darken($bg, 4);
+  }
+}
+
+
+
+#preview {
+  position: fixed;
+  top: -10000px; left: -10000px;
+  max-width: 150px; max-height: 150px;
+}
+
+#imageOnlyControl {
+  display: none;
+}
+
+#info, #download {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 11px;
+
+  color: $grey2;
+
+
+  > a {
+    color: $grey2;
+    text-decoration: none;
+    opacity: .65;
+
+    &:hover { color: $link; opacity: 1;}
+  }
+}
+
+#download {
+  position: fixed;
+  left: auto;
+  right: 25px;
+  background-color: transparent;
+}
+
+#close {
+  position: fixed;
+  right: 5px; top: 0px;
+  font-weight: 100;
+  font-size: 2em;
+  line-height: 1;
+  padding: 10px;
+  display: block;
+  color: $grey2;
+  cursor: pointer;
+  transform: rotateZ(0deg);
+  transition: transform .2s;
+
+  &:hover {
+    color: $link;
+  }
+
+  &.closed {
+    transform: rotateZ(-45deg);
+  }
+}

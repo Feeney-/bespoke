@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,100' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="csphotoselector.css">
+	<link href="css/style.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="js/d3.min.js"></script>
+	<script type="text/javascript" src="js/jsfeat-min.js"></script>
+
+</head>
+<body>
+
+ <a href="#" id="btnLogin" ><img id="splash"  src="images/bespoke-spash.jpg" height="102%"  style="position: fixed; z-index:400; margin-top:-30px; margin-left:-70px; "alt=""/></a>
+
+<div id="container">
+
+	<div id="svg">
+
+	</div>
+
+	<div id="dots"></div>
+
+	<div id="info">
+		<a href="https://facebook.com/vasco.silvah" target="_blank">By @Vasco</a> &middot;
+		<a href="https://github.com/Feeney_/bespoke" target="_blank">Source code</a> &middot;
+		<a href="" target="_blank">How it works</a>
+	</div>
+
+
+
+	<div id="menu" class="open">
+			<h1 id="header">Bespoke</h1>
+		<p>
+			<label>Status: <span id="login-status">Not logged in</span></label><label class="action"><a href="#" id="btnLogout">Log out</a></label>
+            <hr />
+
+      </p>
+			<p>
+				<label>Select an image</label><label class="action" onclick="loadImage(this)" data-id="mao.jpg">A guy</label>
+				<label>&nbsp;</label><label class="action" onclick="loadImage(this)" data-id="bauhaus.jpg">A dance</label>
+				<label>&nbsp;</label><label class="action" onclick="loadImage(this)" data-id="bay.jpg">A view</label>
+                <label>&nbsp;</label><label class="hint">Your own image...</label>
+                <label>&nbsp;</label><label class="action" id="vasco"  data-id="" onClick="loadImage(this)"><a style="text-decoration : none; color: #00a3f1;"  href="#" class="photoSelect">Select from facebook</a></label>
+				
+
+				<label class="fileinput">
+					<input type="file" id="fileInput" />
+				</label>
+
+			</p>
+
+			<hr />
+
+			<p>
+				<label>Style</label>
+				<select id="visualizationInput">
+					<option value="delaunay">Triangle</option>
+					<option value="voronoi">Cell</option>
+				</select>
+				<span id="imageOnlyControl">
+					<label>&nbsp;</label><label class="checkbox"><input type="checkbox" id="gradientInput" /> <span>Color Gradient</span></label>
+					<label>&nbsp;</label><label class="checkbox"><input type="checkbox" id="featureInput" /> <span id="analyzeLabel">Analyze image</span></label>
+				</span>
+			</p>
+
+			<p>
+				<label>Points</label>
+				<input type="number" id="pointsInput" value="50" />
+			</p>
+
+			<p>
+				<label>Circle size</label>
+				<input type="number" id="circleRadiusInput" value="0" />
+			</p>
+
+			<p>
+				<label>Border size</label>
+				<input type="number" id="lineStrokeInput" value="0" />
+			</p>
+
+
+			<hr />
+			<p>
+				<img id="preview" alt="" />
+				<div id="canvas"></div>
+			</p>
+
+
+
+	</div>
+
+	<div id="download"><a href="#" onclick="downloadSVG()">Download SVG file</a></div>
+	<div id="close" onclick="menuToggle()">&times;</div>
+
+</div>
+<div id="CSPhotoSelector">
+      <div class="CSPhotoSelector_dialog">
+        <a href="#" id="CSPhotoSelector_buttonClose">x</a>
+        <div class="CSPhotoSelector_form">
+          <div class="CSPhotoSelector_header">
+            <p>Choose from Photos</p>
+          </div>
+
+          <div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
+            <p>Browse your albums until you find a picture you want to use</p>
+            <div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+              <div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
+            </div>
+            <div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
+          </div>
+
+          <div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
+            <p>Select a new photo</p>
+            <div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+              <div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
+              <a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
+            </div>
+            <div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
+          </div>
+
+          <div id="CSPhotoSelector_loader"></div>
+
+
+          <div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
+            <a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
+            <a href="#" id="CSPhotoSelector_pageNext">Next</a>
+            <div class="CSPhotoSelector_pageNumberContainer">
+              Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
+            </div>
+            <a href="#" id="CSPhotoSelector_buttonOK">OK</a>
+            <a href="#" id="CSPhotoSelector_buttonCancel">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script type="text/javascript" src="js/kubist_ui.js"></script>
+
+<script type="text/javascript">
+	function menuToggle() {
+		document.querySelector("#menu").classList.toggle("open");
+		document.querySelector("#svg").classList.toggle("larger");
+		document.querySelector("#close").classList.toggle("closed");
+
+		setTimeout( function() {
+			resetKubist(true);
+		}, 600);
+
+	}
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-62057621-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+    window.fbAsyncInit = function() {
+      FB.init({ appId: '831238363634095', cookie: true, status: true, xfbml: true, oauth: true });
+
+      FB.getLoginStatus(function(response) {
+        if (response.authResponse) {
+          $("#login-status").html("Logged in");
+        } else {
+          $("#login-status").html("Not logged in");
+        }
+      });
+    };
+    (function(d){
+      var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement('script'); js.id = id; js.async = true;
+      js.src = "//connect.facebook.net/en_US/all.js";
+      ref.parentNode.insertBefore(js, ref);
+    }(document));
+    </script>
+    <script src="csphotoselector.js"></script>
+    <script src="example.js"></script>
+
+    <!-- Don't use this code in your pages -->
+    <script>
+      // These analytics are here for the page at http://labs.carsonshold.com/fb-photo-selector/
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8697235-1']);
+      _gaq.push(['_setDomainName', 'carsonshold.com']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;g.src="//www.google-analytics.com/ga.js";s.parentNode.insertBefore(g,s);}(document,"script"));
+    </script>
+</body>
+</html>
