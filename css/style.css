@@ -14,7 +14,15 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none; }
-
+#splash { 
+background-color:#FFFFFF; width:103%; height:103%; position:fixed; z-index:10;
+}
+.share {
+	width:55px;
+	height:55px;
+	background-color:#B8B8B8;
+	border-radius:150px;
+}
 #dots {
   z-index: 1;
   position: absolute;
@@ -130,6 +138,58 @@ h1 {
     margin: 20px;
     border: none;
     border-top: 1px solid #e5eaf2; }
+	
+#menu2 {
+  position: absolute;
+  top: 0;
+  left: -120px;
+  width: 100px;
+  bottom: 0;
+  background-color: #fff;
+  border-left: 1px solid #eceff6;
+  padding: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: right .5s; 
+ }
+  
+  #menu2.open {
+    left: 0; }
+  
+  #menu2 p {
+    padding: 0px 10px 5px 20px; }
+    #menu2 p label {
+      display: inline-block;
+      font-size: 12px;
+      min-width: 120px;
+      color: #667788;
+      font-weight: 400; }
+      #menu2 p label.sub {
+        margin-bottom: 15px; }
+      #menu2 p label.fileinput {
+        margin-top: 15px;
+        margin-left: 120px; }
+      #menu2 p label.hint {
+        color: #bbb; }
+      #menu2 p label.action {
+        color: #00a3f1;
+        cursor: pointer; }
+        #menu2 p label.action:hover {
+          color: #00CCFF; }
+    #menu2 p input[type="number"] {
+      padding: 5px;
+      width: 100px;
+      border: 1px solid #99aabb; }
+      #menu2 p input[type="number"][type="file"] {
+        width: auto; }
+    #menu2 p select {
+      padding: 5px;
+      width: 115px;
+      border: 1px solid #99aabb; }
+  #menu2 hr {
+    margin: 20px;
+    border: none;
+    border-top: 1px solid #e5eaf2; }
 
 #preview {
   position: fixed;
@@ -177,4 +237,22 @@ h1 {
   #close:hover {
     color: #00a3f1; }
   #close.closed {
+    transform: rotateZ(-45deg); }
+	
+	#close2 {
+  position: fixed;
+  left: 5px;
+  top: 0px;
+  font-weight: 100;
+  font-size: 2em;
+  line-height: 1;
+  padding: 10px;
+  display: block;
+  color: #667788;
+  cursor: pointer;
+  transform: rotateZ(0deg);
+  transition: transform .2s; }
+  #close2:hover {
+    color: #00a3f1; }
+  #close2.closed {
     transform: rotateZ(-45deg); }

@@ -42,7 +42,7 @@
       grayscale: null,
       loaded: false
     }
-
+	
     document.querySelector("#canvas").appendChild( img.canvas );
     img.context = img.canvas.getContext("2d");
 
@@ -54,23 +54,25 @@
 
 
     // Image loaded
-    img.preview.onload = function() {
-
-      var scale = Math.min( 150 / img.preview.width, 150 / img.preview.height );
-
-      img.canvas.width = img.preview.width * scale;
-      img.canvas.height = img.preview.height * scale;
-      img.context.drawImage(img.preview, 0, 0, img.canvas.width, img.canvas.height );
-
-      var image_data = img.context.getImageData(0, 0, img.canvas.width, img.canvas.height);
-      img.grayscale = new jsfeat.matrix_t(img.canvas.width, img.canvas.height, jsfeat.U8_t | jsfeat.C1_t);
-      jsfeat.imgproc.grayscale(image_data.data, img.canvas.width, img.canvas.height, img.grayscale);
-
-      img.loaded = true;
-
-      document.querySelector("#imageOnlyControl").style.display="block";
-      reset();
-    };
+	  img.preview.onload = function() {
+  
+		var scale = Math.min( 150 / img.preview.width, 150 / img.preview.height );
+  
+		img.canvas.width = img.preview.width * scale;
+		img.canvas.height = img.preview.height * scale;
+		img.context.drawImage(img.preview, 0, 0, img.canvas.width, img.canvas.height );
+		  img.preview.crossOrigin = "Anonymous";
+		var image_data = img.context.getImageData(0, 0, img.canvas.width, img.canvas.height);
+		img.grayscale = new jsfeat.matrix_t(img.canvas.width, img.canvas.height, jsfeat.U8_t | jsfeat.C1_t);
+		jsfeat.imgproc.grayscale(image_data.data, img.canvas.width, img.canvas.height, img.grayscale);
+  
+		img.loaded = true;
+  
+		document.querySelector("#imageOnlyControl").style.display="block";
+		
+		
+		reset();
+	  };
 
     // Window resize
     window.onresize = function(evt) {
@@ -427,12 +429,13 @@
 
     var fileInput = document.querySelector("#fileInput");
     fileInput.addEventListener("change", readImage, false );
-
+	
     // Read image from file picker
     function readImage() {
       if ( this.files && this.files[0] ) {
         var FR= new FileReader();
         FR.onload = function(e) {
+			
           img.preview.setAttribute("src", e.target.result );
         };
         FR.readAsDataURL( this.files[0] );
@@ -443,21 +446,51 @@
     window.loadImage = function( target ) {
       var file = target.getAttribute("data-id");
       if (file) img.preview.src = "images/"+file;
+	  
+    }
+ window.faceImage = function ( target ) {
+      var file = target.getAttribute("data-id");
+	  
+	  img.preview.crossOrigin = "Anonymous";
+      if (file) img.preview.src = file;
     }
 
 
     // Triggers download svg
-    window.downloadSVG = function() {
-      var pom = document.createElement('a');
-      pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(svg.container.innerHTML));
-      pom.setAttribute('download', "kubist.svg");
+ window.downloadSVG = function( target ) {
+      
+     
+	  var ref = new Firebase("https://tawsbespoke.firebaseio.com/");
+	
+	
+	ref.child("users").on("value", function(snapshot) {
+	  var newPost = snapshot.val();
+	  var usersRef = ref.child(newPost.user);
+	usersRef.set({
+	
+
+		svg: svg.container.innerHTML
+	
+	});
+	
+	window.location = "http://design3.altervista.org/bespoke/index.html?id="+newPost.user;
+	});
+	
+     
+    }
+
+  window.downloadJPG = function() {
+    var pom = document.createElement('a');
+	var svgDown = document.getElementById("svgElem");
+      pom.setAttribute('href', svg.element.toDataURL("image/png"));
+      pom.setAttribute('download', "kubist.png");
       pom.style.display = 'none';
+	
       document.body.appendChild(pom);
       pom.click();
       document.body.removeChild(pom);
-    }
-
-
+ }
+ 
     // Make the dot element draggable
     function movable ( elem, parent ) {
 
